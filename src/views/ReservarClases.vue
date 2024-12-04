@@ -31,15 +31,18 @@
               <td
                 v-for="(clases, dia) in calendario"
                 :key="dia"
-                class="border-t"
+                class="border-t align-top"
               >
-                <div v-for="clase in clases" :key="clase.id" class="py-2 px-4">
-                  <h2 class="font-bold">{{ clase.nombre }}</h2>
+                <div
+                  v-for="clase in clases"
+                  :key="clase.id"
+                  class="p-4 mb-4 bg-gray-100 border border-gray-300 rounded-lg shadow-sm"
+                >
+                  <h2 class="font-bold text-lg">{{ clase.nombre }}</h2>
                   <p class="text-sm text-gray-600">{{ clase.descripcion }}</p>
                   <p class="text-sm text-indigo-500">{{ clase.horario }}</p>
                   <p v-if="clase.cupos > 0" class="text-sm text-green-500">
-                    Cupos disponibles:
-                    {{ clase.cupos }}
+                    Cupos disponibles: {{ clase.cupos }}
                   </p>
                   <p v-else class="text-sm text-red-500">
                     Cupos disponibles: {{ clase.cupos }}
@@ -53,10 +56,10 @@
                   </button>
                   <button
                     v-else
-                    @click="reservarClase(clase.id, clase.cupos)"
-                    class="mt-2 bg-red-100 text-redd-700 py-1 px-2 rounded-lg hover:bg-red-200"
+                    disabled
+                    class="mt-2 bg-gray-300 text-gray-700 py-1 px-2 rounded-lg cursor-not-allowed"
                   >
-                    Reservar clase
+                    Sin cupos
                   </button>
                 </div>
               </td>
