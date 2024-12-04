@@ -31,14 +31,14 @@
               <td
                 v-for="(reservas, dia) in calendario"
                 :key="dia"
-                class="border-t"
+                class="border-t align-top"
               >
                 <div
                   v-for="reserva in reservas"
                   :key="reserva.id"
-                  class="py-2 px-4"
+                  class="p-4 mb-4 bg-gray-100 border border-gray-300 rounded-lg shadow-sm"
                 >
-                  <h2 class="font-bold">{{ reserva.nombre }}</h2>
+                  <h2 class="font-bold text-lg">{{ reserva.nombre }}</h2>
                   <p class="text-sm text-gray-600">{{ reserva.descripcion }}</p>
                   <p class="text-sm text-indigo-500">{{ reserva.horario }}</p>
                   <button
