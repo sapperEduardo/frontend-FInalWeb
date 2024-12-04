@@ -60,13 +60,16 @@
         </p>
       </div>
     </div>
+    <Footer />
   </div>
 </template>
 
 <script>
 import { getWithTwoParams } from "@/apiHandler";
+import Footer from "@/components/Footer.vue";
 
 export default {
+  components: { Footer },
   data() {
     return {
       usernameOrEmail: "",
