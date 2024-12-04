@@ -76,10 +76,12 @@
         </p>
       </div>
     </div>
+    <Footer />
   </div>
 </template>
 <script>
 import { createItem } from "@/apiHandler"; // Importamos el método de apiHandler
+import Footer from "@/components/Footer.vue";
 
 export default {
   data() {
@@ -91,6 +93,7 @@ export default {
       error: "", // Para mensajes de error
     };
   },
+  components: { Footer },
   methods: {
     async handleRegister() {
       // Validar campos requeridos
