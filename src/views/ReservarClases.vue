@@ -120,7 +120,7 @@ export default {
       if (this.usuario && this.esNombreEspecial(this.usuario.nombre)) {
         return `${this.usuario.nombre} linda❤️💘`;
       }
-      return `¡Hola, ${this.usuario.nombre}!`;
+      return `${this.usuario.nombre}`;
     },
     nombre() {
       if (this.usuario && this.esNombreEspecial(this.usuario.nombre)) {
