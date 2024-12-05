@@ -96,7 +96,6 @@ export default {
   components: { Footer },
   methods: {
     async handleRegister() {
-      const trimedname = this.name?.trim();
       // Validar campos requeridos
       if (!this.name || !this.email || !this.password) {
         this.error = "Por favor, completa todos los campos obligatorios.";
@@ -107,7 +106,7 @@ export default {
         // Construir el objeto del usuario
         const newUser = {
           id: null,
-          nombre: trimedname,
+          nombre: this.name?.trim(),
           correo: this.email,
           telefono: this.phone || "No especificado",
           contraseña: this.password,
@@ -134,3 +133,4 @@ export default {
   },
 };
 </script>
+
