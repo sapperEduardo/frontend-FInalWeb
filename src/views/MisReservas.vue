@@ -5,16 +5,22 @@
 
     <!-- Texto de bienvenida -->
     <div class="text-center py-6">
-      <h1 v-if="usuario" class="text-2xl font-bold">
-        ¡Hola, {{ usuario.nombre }}!
-      </h1>
+      <h1 v-if="usuario" class="text-2xl font-bold">{{ saludo }}</h1>
       <p class="text-lg text-gray-600">Estas son tus clases reservadas:</p>
     </div>
 
+    <div v-if="mostrarAnimacion" class="animacion-bienvenida">
+      <h1 class="text-4xl font-bold text-pink-500">
+        ¡Bienvenida <br />{{ nombre }}! 🎉
+      </h1>
+    </div>
     <!-- Calendario semanal -->
     <div class="flex-grow px-4 py-6">
       <div class="overflow-x-auto">
-        <table class="min-w-full bg-white border border-gray-300 rounded-lg">
+        <table
+          v-if="tieneReservas"
+          class="min-w-full bg-white border border-gray-300 rounded-lg"
+        >
           <thead>
             <tr class="bg-indigo-600 text-white">
               <th class="py-2 px-4">Lunes</th>
@@ -52,6 +58,20 @@
             </tr>
           </tbody>
         </table>
+
+        <!-- Mensaje en caso de no tener reservas -->
+        <div v-else class="text-center mt-6 text-gray-600">
+          <p>¡Oh no! Todavía no tienes ninguna reserva.</p>
+          <p>
+            Puedes realizar una haciendo clic
+            <span
+              class="text-blue-600 underline cursor-pointer"
+              @click="irAReservar"
+              >aquí</span
+            >
+            o dirigiéndote a "Reservar Clases" a través del menú.
+          </p>
+        </div>
       </div>
     </div>
 
@@ -73,6 +93,8 @@ export default {
       calendario: {}, // Inicia vacío para llenarlo con datos del backend
       cargando: true,
       error: null,
+      nombresEspeciales: ["aldi", "aldana", "cami", "camila"],
+      mostrarAnimacion: false, // Controla si se muestra la animación
     };
   },
   computed: {
@@ -81,8 +103,32 @@ export default {
     usuario() {
       return this.obtenerUsuario;
     },
+    saludo() {
+      if (this.usuario && this.esNombreEspecial(this.usuario.nombre)) {
+        return `¡Hola, ${this.usuario.nombre} linda💖💝!`;
+      }
+      return `¡Hola, ${this.usuario.nombre}!`;
+    },
+    nombre() {
+      if (this.usuario && this.esNombreEspecial(this.usuario.nombre)) {
+        return `${this.usuario.nombre} linda🥰`;
+      }
+      return `¡Hola, ${this.usuario.nombre}!`;
+    },
+    tieneReservas() {
+      return Object.values(this.calendario).some(
+        (reservas) => reservas.length > 0
+      );
+    },
   },
   methods: {
+    esNombreEspecial(nombre) {
+      const nombreMinusculas = nombre.toLowerCase();
+      return this.nombresEspeciales.some((n) => nombreMinusculas.includes(n));
+    },
+    irAReservar() {
+      this.$router.push("/reservar-clases");
+    },
     async cargarCalendario() {
       try {
         this.cargando = true;
@@ -121,6 +167,12 @@ export default {
 
   mounted() {
     this.cargarCalendario(); // Carga el calendario al montar el componente
+    if (this.usuario && this.esNombreEspecial(this.usuario.nombre)) {
+      this.mostrarAnimacion = true;
+      setTimeout(() => {
+        this.mostrarAnimacion = false; // Oculta la animación después de unos segundos
+      }, 3000); // Cambia la duración según prefieras
+    }
   },
 };
 </script>
@@ -134,5 +186,32 @@ td,
 th {
   text-align: left;
   padding: 8px;
+}
+</style>
+
+<style scoped>
+@keyframes entrada {
+  0% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(10px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animacion-bienvenida {
+  animation: entrada 1.5s ease-in-out;
+  background-color: #fff4f7;
+  padding: 20px;
+  max-width: 88%;
+  border-radius: 10px;
+  margin: 20px auto;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 </style>
