@@ -79,7 +79,11 @@ export default {
   },
   methods: {
     async handleLogin() {
-      if (!this.usernameOrEmail || !this.password) {
+      // Limpiar espacios externos en los campos
+      const trimmedUsernameOrEmail = this.usernameOrEmail?.trim();
+      const trimmedPassword = this.password;
+
+      if (!trimmedUsernameOrEmail || !trimmedPassword) {
         this.error = "Por favor, completa todos los campos.";
         return;
       }
@@ -88,8 +92,8 @@ export default {
         // Llama al método getWithTwoParams para validar al usuario
         const response = await getWithTwoParams(
           "user/login",
-          this.usernameOrEmail,
-          this.password
+          trimmedUsernameOrEmail,
+          trimmedPassword
         );
 
         if (response.estado === "error") {
@@ -109,3 +113,4 @@ export default {
   },
 };
 </script>
+
