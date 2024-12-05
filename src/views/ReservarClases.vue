@@ -6,10 +6,29 @@
     <!-- Texto de bienvenida -->
     <div class="text-center py-6">
       <h1 v-if="usuario" class="text-2xl font-bold">
-        ¡Estas son tus clases disponibles {{ usuario.nombre }}!
+        ¡Estas son tus clases disponibles {{ saludo }}!
       </h1>
       <p class="text-lg text-gray-600">Elige una clase para reservar:</p>
     </div>
+
+    <!-- Animación Informativa -->
+    <div
+      v-if="mostrarAnimacionInformativa"
+      class="animacion-informativa p-4 mb-4 bg-yellow-100 border border-yellow-300 rounded-lg shadow-lg"
+    >
+      <p class="text-xl font-semibold text-yellow-800">
+        ¡Recuerda {{ nombre }}! Las clases se reservan por orden de llegada. Si
+        ves que no hay cupos disponibles, intenta con otro horario.
+      </p>
+      <button
+        @click="cerrarAnimacion"
+        class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+      >
+        Aceptar
+      </button>
+    </div>
+
+    <!-- Resto del contenido de la página (Calendario, botones, etc.) -->
 
     <!-- Calendario semanal -->
     <div class="flex-grow px-4 py-6">
@@ -87,6 +106,8 @@ export default {
       calendario: {}, // Inicia vacío para llenarlo con datos del backend
       cargando: true,
       error: null,
+      nombresEspeciales: ["aldi", "aldana", "cami", "camila"],
+      mostrarAnimacionInformativa: false, // Controla si se muestra la animación informativa
     };
   },
   computed: {
@@ -95,10 +116,29 @@ export default {
     usuario() {
       return this.obtenerUsuario;
     },
+    saludo() {
+      if (this.usuario && this.esNombreEspecial(this.usuario.nombre)) {
+        return `${this.usuario.nombre} linda❤️💘`;
+      }
+      return `¡Hola, ${this.usuario.nombre}!`;
+    },
+    nombre() {
+      if (this.usuario && this.esNombreEspecial(this.usuario.nombre)) {
+        return `${this.usuario.nombre} linda🥰`;
+      }
+      return `¡Hola, ${this.usuario.nombre}!`;
+    },
   },
   //
 
   methods: {
+    cerrarAnimacion() {
+      this.mostrarAnimacionInformativa = false;
+    },
+    esNombreEspecial(nombre) {
+      const nombreMinusculas = nombre.toLowerCase();
+      return this.nombresEspeciales.some((n) => nombreMinusculas.includes(n));
+    },
     async cargarCalendario() {
       try {
         this.cargando = true;
@@ -142,6 +182,9 @@ export default {
   },
   mounted() {
     this.cargarCalendario(); // Carga el calendario al montar el componente
+    if (this.usuario && this.esNombreEspecial(this.usuario.nombre)) {
+      this.mostrarAnimacionInformativa = true;
+    }
   },
 };
 </script>
@@ -155,5 +198,22 @@ td,
 th {
   text-align: left;
   padding: 8px;
+}
+</style>
+<style scoped>
+.animacion-informativa {
+  width: 90%; /* Ancho del 90% del contenedor */
+  max-width: 400px; /* Ancho máximo para que no se haga demasiado grande */
+  margin: 0 auto; /* Centrado en la pantalla */
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 </style>
