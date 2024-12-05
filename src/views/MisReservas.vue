@@ -93,7 +93,7 @@ export default {
       calendario: {}, // Inicia vacío para llenarlo con datos del backend
       cargando: true,
       error: null,
-      nombresEspeciales: ["aldi", "aldana", "cami", "camila"],
+      nombresEspeciales: ["aldi", "aldana", "cami", "camila","aldí", "aldaná","áldi", "áldana"],
       mostrarAnimacion: false, // Controla si se muestra la animación
     };
   },
