@@ -10,7 +10,7 @@
         <h2 class="text-2xl font-bold mb-6 text-center">Mi Perfil</h2>
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-700">Nombre:</label>
-          <p class="text-gray-800">{{ usuario?.nombre }}</p>
+          <p class="text-gray-800">{{ nombre }}</p>
         </div>
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-700"
@@ -52,6 +52,11 @@ import Navbar from "@/components/Navbar.vue";
 import Footer from "@/components/Footer.vue";
 
 export default {
+  data() {
+    return {
+      nombresEspeciales: ["aldi", "aldana", "cami", "camila"],
+    };
+  },
   components: { Navbar, Footer },
   computed: {
     // Usa Vuex para obtener los datos del usuario
@@ -59,8 +64,18 @@ export default {
     usuario() {
       return this.obtenerUsuario;
     },
+    nombre() {
+      if (this.usuario && this.esNombreEspecial(this.usuario.nombre)) {
+        return `${this.usuario.nombre} hermosaa ❣️`;
+      }
+      return `${this.usuario.nombre}`;
+    },
   },
   methods: {
+    esNombreEspecial(nombre) {
+      const nombreMinusculas = nombre.toLowerCase();
+      return this.nombresEspeciales.some((n) => nombreMinusculas.includes(n));
+    },
     editarDatos() {
       // Redirige a una vista para editar datos
       this.$router.push("/editar-perfil");
